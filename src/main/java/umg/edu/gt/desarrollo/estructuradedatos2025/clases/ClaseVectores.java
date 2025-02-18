@@ -13,7 +13,7 @@ import java.util.LinkedList;
  *
  * @author wcordova
  */
-public class Clase1 {
+public class ClaseVectores {
     
     /**
      * Ejemplo 1: ArrayList y LinkedList

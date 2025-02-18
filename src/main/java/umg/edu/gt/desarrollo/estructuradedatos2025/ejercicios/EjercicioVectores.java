@@ -10,7 +10,7 @@ import java.util.Arrays;
  *
  * @author wcordova
  */
-public class Ejercicio1 {
+public class EjercicioVectores {
     
     public int[] tribonacci(int[] signature, int n) {
         if (n == 0) {
