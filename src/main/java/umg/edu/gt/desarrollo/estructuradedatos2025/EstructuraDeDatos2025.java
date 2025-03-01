@@ -9,6 +9,7 @@ import java.util.Arrays;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import umg.edu.gt.desarrollo.Utilidades.CompararStrings;
 import umg.edu.gt.desarrollo.estructuradedatos2025.clases.ClaseVectores;
 import umg.edu.gt.desarrollo.estructuradedatos2025.ejercicios.EjercicioVectores;
 
@@ -23,6 +24,9 @@ public class EstructuraDeDatos2025 {
     public static void main(String[] args) {
     	System.out.println("Bienvenidos a Programacion 3");
     	logger.info("Bienvenidos a Programacion 3");
+    	CompararStrings comparar = new CompararStrings();
+    	//boolean result = comparar.comparacionTexto("texto1", "texto1");
+    	//logger.info("resultado de comparar: " + result);
     }
     
     public static void testTribonacci() {  
