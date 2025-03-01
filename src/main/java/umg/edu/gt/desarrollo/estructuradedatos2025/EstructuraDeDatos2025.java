@@ -15,7 +15,7 @@ import umg.edu.gt.desarrollo.estructuradedatos2025.ejercicios.EjercicioVectores;
 public class EstructuraDeDatos2025 {
 
     public static void main(String[] args) {
-        
+    	System.out.println("Bienvenidos a Programacion 3");
     }
     
     public static void testTribonacci() {  
