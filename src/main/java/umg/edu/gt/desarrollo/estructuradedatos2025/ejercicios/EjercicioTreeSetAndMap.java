@@ -1,65 +1,97 @@
 package umg.edu.gt.desarrollo.estructuradedatos2025.ejercicios;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.*;
+
 public class EjercicioTreeSetAndMap {
-	
-	/** INSTRUCCIONES
- 	Escriba el algoritmo que resuelve el problema en esta clase.
-	Debe crear un package llamado umg.edu.gt.test.EjercicioTree que corresponda al Test de esta clase.
-	Genere un Test por cada ejemplo y fuerce que uno de esos Test falle, puede implementar retornar un resultado
-	y compararlo con el esperado.
-	 */
-	
-	/* EJERCICIO 1: Análisis de Frecuencia de Palabras (TreeMap)
-	 * 📜 Descripción: Escriba un programa que lea un texto de un archivo y cuente la frecuencia de cada palabra, ordenándolas alfabéticamente.
-		🔹 Instrucciones:
-			Leer un archivo de texto (.txt).			
-			Dividir el texto en palabras (ignorando puntuaciones y convirtiéndolas a minúsculas).
-			Almacenar cada palabra en un TreeMap<String, Integer>, donde la clave es la palabra y el valor es el número de veces que aparece.
-			Imprimir las palabras en orden alfabético junto con su frecuencia.
-	 */
-	
-	
-	/* EJERCICIO 2: Rastreador de Versiones de Código (TreeMap)
-		📜 Descripción: Desarrolle un programa que simule un rastreador de versiones de archivos en un sistema de control de versiones.
-		🔹 Instrucciones:
-			Utilice un TreeMap<Integer, String>, donde la clave representa el número de versión y el valor es el contenido de esa versión del código.			
-			Debe permitir:			
-			Agregar una nueva versión con una clave autoincrementada.			
-			Obtener una versión específica dada su clave.			
-			Obtener la última versión disponible.			
-			Eliminar una versión específica si es necesario.
-			
-			Salida:
-				Agregar versión 1: "System.out.println('Hola Mundo');"
-				Agregar versión 2: "System.out.println('Hola Java');"
-				Última versión: "System.out.println('Hola Java');"
-				Versión 1: "System.out.println('Hola Mundo');"
 
-	 * 
-	 */
-	
-	/** EJERCICIO 3: Sistema de Gestión de Eventos (TreeSet)
-		📜 Descripción: Implemente un sistema para administrar eventos ordenados cronológicamente.		
-		🔹 Instrucciones:		
-			Utilice un TreeSet<Evento>, donde cada Evento debe contener:		
-			fecha (LocalDateTime)		
-			nombre (String)		
-			ubicación (String)		
-			Los eventos deben ordenarse automáticamente por fecha y hora.		
-			Debe permitir:		
-				Agregar un nuevo evento.		
-				Mostrar la lista de eventos en orden cronológico.		
-				Obtener el próximo evento a ocurrir.		
-				Eliminar un evento pasado automáticamente después de una consulta.
-				
-			Salida:
-				Próximo evento: "Conferencia de Java", 2025-05-10 10:00, Auditorio A  
-				Lista de eventos:  
-				1. "Taller de Machine Learning", 2025-04-15 14:00, Sala 3  
-				2. "Conferencia de Java", 2025-05-10 10:00, Auditorio A  
+    // EJERCICIO 1
+    public static Map<String, Integer> contarFrecuencia(String rutaArchivo) throws IOException {
+        String contenido = new String(Files.readAllBytes(Paths.get(rutaArchivo))).toLowerCase();
+        contenido = contenido.replaceAll("[^a-záéíóúñü\\s]", ""); // limpiar puntuación
+        String[] palabras = contenido.split("\\s+");
 
-	 */
-	
-	
+        TreeMap<String, Integer> mapa = new TreeMap<>();
+        for (String palabra : palabras) {
+            if (!palabra.isEmpty()) {
+                mapa.put(palabra, mapa.getOrDefault(palabra, 0) + 1);
+            }
+        }
+        return mapa;
+    }
 
+    // EJERCICIO 2
+    private static TreeMap<Integer, String> versiones = new TreeMap<>();
+    private static int contador = 0;
+
+    public static int agregarVersion(String contenido) {
+        versiones.put(++contador, contenido);
+        return contador;
+    }
+
+    public static String obtenerVersion(int version) {
+        return versiones.get(version);
+    }
+
+    public static String obtenerUltimaVersion() {
+        return versiones.isEmpty() ? null : versiones.lastEntry().getValue();
+    }
+
+    public static void eliminarVersion(int version) {
+        versiones.remove(version);
+    }
+
+    // EJERCICIO 3
+    public static class Evento implements Comparable<Evento> {
+        private LocalDateTime fecha;
+        private String nombre;
+        private String ubicacion;
+
+        public Evento(LocalDateTime fecha, String nombre, String ubicacion) {
+            this.fecha = fecha;
+            this.nombre = nombre;
+            this.ubicacion = ubicacion;
+        }
+
+        public LocalDateTime getFecha() {
+            return fecha;
+        }
+
+        public String getNombre() {
+            return nombre;
+        }
+
+        public String getUbicacion() {
+            return ubicacion;
+        }
+
+        @Override
+        public int compareTo(Evento otro) {
+            return this.fecha.compareTo(otro.fecha);
+        }
+
+        @Override
+        public String toString() {
+            return "\"" + nombre + "\", " + fecha.toString().replace("T", " ") + ", " + ubicacion;
+        }
+    }
+
+    private static TreeSet<Evento> eventos = new TreeSet<>();
+
+    public static void agregarEvento(Evento evento) {
+        eventos.add(evento);
+    }
+
+    public static List<Evento> obtenerEventos() {
+        eventos.removeIf(e -> e.getFecha().isBefore(LocalDateTime.now()));
+        return new ArrayList<>(eventos);
+    }
+
+    public static Evento obtenerProximoEvento() {
+        eventos.removeIf(e -> e.getFecha().isBefore(LocalDateTime.now()));
+        return eventos.isEmpty() ? null : eventos.first();
+    }
 }
